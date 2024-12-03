@@ -17,6 +17,8 @@ public class EntradaProGUI {
     private JButton crearEstadioButton;
     private JTextArea textArea2;
     private JButton mostrarEstadioButton;
+    private JButton modificarCapacidadButton;
+    private JButton eliminarEstadioButton;
     private LinkedList<Partido> listaPartidos;
     private LinkedList<Estadio> listaEstadios;
 
@@ -229,6 +231,111 @@ public class EntradaProGUI {
                             .append("\n");
                 }
                 textArea2.setText(sb.toString());
+            }
+        });
+        modificarCapacidadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (listaEstadios.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "No hay estadios disponibles para modificar.");
+                    return;
+                }
+
+                StringBuilder sb = new StringBuilder("Estadios disponibles:\n");
+                for (int i = 0; i < listaEstadios.size(); i++) {
+                    Estadio estadio = listaEstadios.get(i);
+                    sb.append(i + 1)
+                            .append(". Nombre: ").append(estadio.getNombre())
+                            .append(", Capacidad: ").append(estadio.getCapacidad())
+                            .append("\n");
+                }
+
+                String opcionStr = JOptionPane.showInputDialog(sb.append("\nIngrese el número del estadio que desea modificar:").toString());
+
+                try {
+                    int indice = Integer.parseInt(opcionStr) - 1; // Convertir a índice basado en 0
+                    if (indice >= 0 && indice < listaEstadios.size()) {
+                        Estadio estadioSeleccionado = listaEstadios.get(indice);
+
+                        int confirmacion = JOptionPane.showConfirmDialog(
+                                null,
+                                "¿Hay algún evento de remodelación en el estadio " + estadioSeleccionado.getNombre() + "?",
+                                "Confirmar Remodelación",
+                                JOptionPane.YES_NO_OPTION
+                        );
+
+                        if (confirmacion == JOptionPane.YES_OPTION) {
+                            String nuevaCapacidadStr = JOptionPane.showInputDialog(
+                                    "Ingrese la nueva capacidad para el estadio " + estadioSeleccionado.getNombre() + ":"
+                            );
+
+                            try {
+                                int nuevaCapacidad = Integer.parseInt(nuevaCapacidadStr);
+                                if (nuevaCapacidad > 0) {
+                                    estadioSeleccionado.setCapacidad(nuevaCapacidad);
+                                    JOptionPane.showMessageDialog(null, "Capacidad modificada exitosamente.");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Error: La capacidad debe ser un número positivo.");
+                                }
+                            } catch (NumberFormatException ex) {
+                                JOptionPane.showMessageDialog(null, "Error: Entrada inválida. La capacidad debe ser un número.");
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Modificación cancelada.");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Número de estadio inválido. Intente de nuevo.");
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Entrada inválida. Por favor, ingrese un número válido.");
+                }
+
+            }
+        });
+        eliminarEstadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (listaEstadios.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "No hay estadios disponibles para eliminar.");
+                    return;
+                }
+
+                StringBuilder sb = new StringBuilder("Estadios disponibles:\n");
+                for (int i = 0; i < listaEstadios.size(); i++) {
+                    Estadio estadio = listaEstadios.get(i);
+                    sb.append(i + 1)
+                            .append(". Nombre: ").append(estadio.getNombre())
+                            .append(", Capacidad: ").append(estadio.getCapacidad())
+                            .append("\n");
+                }
+
+                String opcionStr = JOptionPane.showInputDialog(sb.append("\nIngrese el número del estadio que desea eliminar:").toString());
+
+                try {
+                    int indice = Integer.parseInt(opcionStr) - 1; // Convertir a índice basado en 0
+                    if (indice >= 0 && indice < listaEstadios.size()) {
+                        Estadio estadioSeleccionado = listaEstadios.get(indice);
+
+                        int confirmacion = JOptionPane.showConfirmDialog(
+                                null,
+                                "¿Está seguro de que desea eliminar el estadio " + estadioSeleccionado.getNombre() + "?",
+                                "Confirmar Eliminación",
+                                JOptionPane.YES_NO_OPTION
+                        );
+
+                        if (confirmacion == JOptionPane.YES_OPTION) {
+                            listaEstadios.remove(indice);
+                            JOptionPane.showMessageDialog(null, "Estadio eliminado exitosamente.");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Eliminación cancelada.");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Número de estadio inválido. Intente de nuevo.");
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Entrada inválida. Por favor, ingrese un número válido.");
+                }
+
             }
         });
     }
