@@ -6,6 +6,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.LinkedList;
+/* Este GUI hace referencia al usuario administrador el cual podra gestionar los partidos y los estadios
+* */
 
 public class EntradaProGUI {
     private JPanel pGeneral;
@@ -23,7 +25,7 @@ public class EntradaProGUI {
     private LinkedList<Estadio> listaEstadios;
 
     public EntradaProGUI() {
-        // Dar inicio a la lista
+        // Dar inicio a la  lista de Partidos y estadios
         listaPartidos = new LinkedList<>();
         listaEstadios = new LinkedList<>();
 
@@ -53,7 +55,7 @@ public class EntradaProGUI {
                 String equipoVisitante = JOptionPane.showInputDialog("Ingrese el nombre del equipo visitante:");
                 if (equipoVisitante == null || equipoVisitante.trim().isEmpty()) return;
 
-                // Crear un JSpinner para la fecha y hora
+                // Crear un JSpinner que usaremos como calendario para la fecha y hora
                 JSpinner dateSpinner = new JSpinner(new SpinnerDateModel());
                 dateSpinner.setEditor(new JSpinner.DateEditor(dateSpinner, "yyyy-MM-dd HH:mm"));
 
@@ -72,7 +74,7 @@ public class EntradaProGUI {
 
                     Partido partido = new Partido(fechaHora, equipoAnfitrion, equipoVisitante);
                     listaPartidos.add(partido);
-                    JOptionPane.showMessageDialog(null, "Partido agregado exitosamente!");
+                    JOptionPane.showMessageDialog(null, "Partido agregado de forma correcta");
                 }
             }
         });
@@ -103,7 +105,7 @@ public class EntradaProGUI {
                 );
 
                 try {
-                    int indice = Integer.parseInt(partidoAEliminar) - 1; // Convertir a índice basado en 0
+                    int indice = Integer.parseInt(partidoAEliminar) - 1; // Convertir indices a 0
                     if (indice >= 0 && indice < listaPartidos.size()) {
                         listaPartidos.remove(indice);
                         JOptionPane.showMessageDialog(null, "Partido eliminado exitosamente.");
@@ -340,11 +342,9 @@ public class EntradaProGUI {
         });
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("EntradaProGUI");
-        frame.setContentPane(new EntradaProGUI().pGeneral);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
+    public JPanel getPanelGeneral() {
+        return pGeneral;
     }
+
+
 }

@@ -1,6 +1,7 @@
 public class Equipo {
     private String nombre;
     Estadio estadioLocal;
+    //Se planea implementar la lista de jugadores del equipo a futuro
     //Lista de jugadores
 
 
